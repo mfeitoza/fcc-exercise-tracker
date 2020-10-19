@@ -79,7 +79,7 @@ const exercises = {
                 throw new ErrorHandler(400, errors)
             }
             let { userId, description, duration, date } = req.body
-
+            
             const user = await UserModel.findById(userId)
 
             if (user) {
