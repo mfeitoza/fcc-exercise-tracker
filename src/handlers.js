@@ -61,7 +61,7 @@ const exercises = {
                 data._id = user._id
                 data.username = user.username
                 data.count = user.exercises.length
-                data.exercises = exercises
+                data.log = exercises
                 
                 res.json(data)
             } else {
