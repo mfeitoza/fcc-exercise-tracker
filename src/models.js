@@ -15,7 +15,7 @@ const userSchema = new Schema({
 })
 
 const exerciseSchema = new Schema({
-    userId: {
+    username: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },

@@ -61,16 +61,16 @@ const exercises = {
             if (errors.length > 0) {
                 throw new ErrorHandler(400, errors)
             }
-            let { userId, description, duration, date } = req.body
+            let { username, description, duration, date } = req.body
 
-            if (mongoose.Types.ObjectId.isValid(userId)) {
+            if (mongoose.Types.ObjectId.isValid(username)) {
                 
-                const user = await UserModel.findById(userId)
+                const user = await UserModel.findById(username)
 
                 if (user) {
                     date = date ? parse(date, 'yyyy-MM-dd', new Date()) : new Date(Date.now())
 
-                    const newExercise = new ExerciseModel({ userId, description, duration, date })
+                    const newExercise = new ExerciseModel({ username, description, duration, date })
                     const savedExercise = await newExercise.save()
 
                     user.exercises.push(savedExercise._id)
@@ -89,7 +89,7 @@ const exercises = {
     },
     createValidation () {
         return [
-            body('userId').isString().not().isEmpty(),
+            body('username').isString().not().isEmpty(),
             body('description').isString().not().isEmpty()
         ]
     }
