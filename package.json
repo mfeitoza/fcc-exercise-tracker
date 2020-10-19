@@ -1,0 +1,22 @@
+{
+  "name": "url-shortner",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Marcus Feitoza",
+  "license": "MIT",
+  "scripts": {
+    "start": "NODE_ENV=production node src/index.js",
+    "dev": "NODE_ENV=dev node-dev src/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "easy-livereload": "^1.4.3",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.9",
+    "nanoid": "^3.1.12",
+    "node-dev": "^6.2.0"
+  }
+}
