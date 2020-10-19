@@ -40,10 +40,10 @@ const exercises = {
         let { userId, from, to, limit } = req.query
         const data = {}
 
-        const user = await UserModel.findOne({ username: userId })
+        const user = await UserModel.findOne({ _id: userId })
         try {
             if (user) {
-                const query = ExerciseModel.find({ username: userId })
+                const query = ExerciseModel.find({ username: user.username })
                 if (from) {
                     from = parse(from, 'yyyy-MM-dd', new Date())
                     query.where('date').gte(from)
