@@ -29,6 +29,7 @@ if (app.get('env') === 'development') {
 
 app.get('/api/exercise/users', users.findAll)
 app.post('/api/exercise/new-user', users.create)
+app.get('/api/exercise/log', exercises.findAll)
 app.post('/api/exercise/add', exercises.createValidation(), exercises.create)
 
 // error handler middleware

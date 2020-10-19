@@ -37,7 +37,22 @@ const users = {
 
 const exercises = {
     async findAll (req, res) {
-        const { userId, from, to, limit } = req.query
+        let { userId, from, to, limit } = req.query
+        const query = ExerciseModel.find({ userId })
+        if (from) {
+            from = parse(from, 'yyyy-MM-dd', new Date())
+            console.log(from)
+            query.where('date').gte(from)
+        }
+        if (to) {
+            to = parse(to, 'yyyy-MM-dd', new Date())
+            query.where('date').lte(to)
+        }
+        if (limit) {
+            query.limit(limit)
+        }
+        const exercises = await query.exec()
+        res.json(exercises)
     },
     async create (req, res, next) {
         try {
@@ -60,7 +75,7 @@ const exercises = {
 
                     user.exercises.push(savedExercise._id)
                     user.save()
-                    
+
                     res.json(savedExercise)
                 } else {
                     throw new ErrorHandler(404, `User not found.`)
