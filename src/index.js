@@ -4,12 +4,14 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const livereload = require('easy-livereload')
 const mongoose = require('mongoose')
+morgan = require('morgan')
 
 const { handleError } = require('./error')
 const { fineHandler, users, exercises } = require('./handlers')
 
 dotenv.config()
 const app = express()
+app.use(morgan('tiny'))
 
 const PORT = process.env.PORT
 const MONGO_URL = process.env.MONGO_URL
