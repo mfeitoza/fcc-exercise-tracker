@@ -16,8 +16,8 @@ const userSchema = new Schema({
 
 const exerciseSchema = new Schema({
     username: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
+        type: String,
+        required: true
     },
     description: {
         type: String,

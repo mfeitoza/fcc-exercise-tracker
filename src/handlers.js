@@ -40,31 +40,36 @@ const exercises = {
         let { userId, from, to, limit } = req.query
         const data = {}
 
-        if (mongoose.Types.ObjectId.isValid(userId)) {
-            const user = await UserModel.findById(userId)
-            
-            const query = ExerciseModel.find({ username: userId })
-            if (from) {
-                from = parse(from, 'yyyy-MM-dd', new Date())
-                query.where('date').gte(from)
-            }
-            if (to) {
-                to = parse(to, 'yyyy-MM-dd', new Date())
-                query.where('date').lte(to)
-            }
-            if (limit) {
-                query.limit(limit)
-            }
+        const user = await UserModel.findOne({ username: userId })
+        try {
+            if (user) {
+                const query = ExerciseModel.find({ username: userId })
+                if (from) {
+                    from = parse(from, 'yyyy-MM-dd', new Date())
+                    query.where('date').gte(from)
+                }
+                if (to) {
+                    to = parse(to, 'yyyy-MM-dd', new Date())
+                    query.where('date').lte(to)
+                }
+                if (limit) {
+                    query.limit(limit)
+                }
 
-            const exercises = await query.exec()
+                const exercises = await query.exec()
 
-            data._id = user._id
-            data.username = user.username
-            data.count = user.exercises.length
-            data.exercises = exercises
-            
-            res.json(data)
-        } 
+                data._id = user._id
+                data.username = user.username
+                data.count = user.exercises.length
+                data.exercises = exercises
+                
+                res.json(data)
+            } else {
+            throw new ErrorHandler(404, `User not found.`)
+            }
+        } catch (error) {
+            next(error)
+        }
     },
     async create (req, res, next) {
         try {
@@ -75,29 +80,24 @@ const exercises = {
             }
             let { userId, description, duration, date } = req.body
 
-            if (mongoose.Types.ObjectId.isValid(userId)) {
-                
-                const user = await UserModel.findById(userId)
+            const user = await UserModel.findOne({ username: userId })
 
-                if (user) {
-                    date = date ? parse(date, 'yyyy-MM-dd', new Date()) : new Date(Date.now())
+            if (user) {
+                date = date ? parse(date, 'yyyy-MM-dd', new Date()) : new Date(Date.now())
 
-                    const newExercise = new ExerciseModel({ username: userId, description, duration, date })
-                    const savedExercise = await newExercise.save()
+                const newExercise = new ExerciseModel({ username: user.username, description, duration, date })
+                const savedExercise = await newExercise.save()
 
-                    user.exercises.push(savedExercise._id)
-                    user.save()
+                user.exercises.push(savedExercise._id)
+                user.save()
 
-                    res.json({
-                        _id: savedExercise._id,
-                        username: savedExercise.username,
-                        description: savedExercise.description,
-                        duration: savedExercise.duration,
-                        date: savedExercise.date.toDateString()
-                    })
-                } else {
-                    throw new ErrorHandler(404, `User not found.`)
-                }       
+                res.json({
+                    _id: savedExercise._id,
+                    username: savedExercise.username,
+                    description: savedExercise.description,
+                    duration: savedExercise.duration,
+                    date: savedExercise.date.toDateString()
+                })
             } else {
                 throw new ErrorHandler(404, `User not found.`)
             }        
