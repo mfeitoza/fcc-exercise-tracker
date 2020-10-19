@@ -6,7 +6,7 @@ const livereload = require('easy-livereload')
 const mongoose = require('mongoose')
 
 const { handleError } = require('./error')
-const { fineHandler, users } = require('./handlers')
+const { fineHandler, users, exercises } = require('./handlers')
 
 dotenv.config()
 const app = express()
@@ -29,6 +29,7 @@ if (app.get('env') === 'development') {
 
 app.get('/api/exercise/users', users.findAll)
 app.post('/api/exercise/new-user', users.create)
+app.post('/api/exercise/add', exercises.createValidation(), exercises.create)
 
 // error handler middleware
 app.use((err, req, res, next) => {
