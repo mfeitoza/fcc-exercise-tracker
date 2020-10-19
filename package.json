@@ -18,6 +18,7 @@
     "express-validator": "^6.6.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
     "nanoid": "^3.1.12",
     "node-dev": "^6.2.0",
     "slugify": "^1.4.5"

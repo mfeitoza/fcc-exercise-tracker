@@ -11,7 +11,9 @@ const { fineHandler, users, exercises } = require('./handlers')
 
 dotenv.config()
 const app = express()
-app.use(morgan('tiny'))
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+
+app.use(morgan(':method :url :status :body - :response-time ms'))
 
 const PORT = process.env.PORT
 const MONGO_URL = process.env.MONGO_URL
