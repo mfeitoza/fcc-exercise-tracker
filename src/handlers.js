@@ -38,10 +38,9 @@ const users = {
 const exercises = {
     async findAll (req, res) {
         let { userId, from, to, limit } = req.query
-        const query = ExerciseModel.find({ userId })
+        const query = ExerciseModel.find({ username: userId })
         if (from) {
             from = parse(from, 'yyyy-MM-dd', new Date())
-            console.log(from)
             query.where('date').gte(from)
         }
         if (to) {
