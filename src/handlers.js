@@ -80,7 +80,7 @@ const exercises = {
             }
             let { userId, description, duration, date } = req.body
 
-            const user = await UserModel.findOne({ username: userId })
+            const user = await UserModel.findById(userId)
 
             if (user) {
                 date = date ? parse(date, 'yyyy-MM-dd', new Date()) : new Date(Date.now())
