@@ -53,7 +53,7 @@ const exercises = {
                     query.where('date').lte(to)
                 }
                 if (limit) {
-                    query.limit(limit)
+                    query.limit(Number(limit))
                 }
 
                 const exercises = await query.exec()
