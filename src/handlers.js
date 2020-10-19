@@ -75,7 +75,13 @@ const exercises = {
                     user.exercises.push(savedExercise._id)
                     user.save()
 
-                    res.json(savedExercise)
+                    res.json({
+                        _id: savedExercise._id,
+                        username: savedExercise.username,
+                        description: savedExercise.description,
+                        duration: savedExercise.duration,
+                        date: savedExercise.date.toDateString()
+                    })
                 } else {
                     throw new ErrorHandler(404, `User not found.`)
                 }       
