@@ -36,22 +36,35 @@ const users = {
 }
 
 const exercises = {
-    async findAll (req, res) {
+    async findAll (req, res, next) {
         let { userId, from, to, limit } = req.query
-        const query = ExerciseModel.find({ username: userId })
-        if (from) {
-            from = parse(from, 'yyyy-MM-dd', new Date())
-            query.where('date').gte(from)
-        }
-        if (to) {
-            to = parse(to, 'yyyy-MM-dd', new Date())
-            query.where('date').lte(to)
-        }
-        if (limit) {
-            query.limit(limit)
-        }
-        const exercises = await query.exec()
-        res.json(exercises)
+        const data = {}
+
+        if (mongoose.Types.ObjectId.isValid(userId)) {
+            const user = await UserModel.findById(userId)
+            
+            const query = ExerciseModel.find({ username: userId })
+            if (from) {
+                from = parse(from, 'yyyy-MM-dd', new Date())
+                query.where('date').gte(from)
+            }
+            if (to) {
+                to = parse(to, 'yyyy-MM-dd', new Date())
+                query.where('date').lte(to)
+            }
+            if (limit) {
+                query.limit(limit)
+            }
+
+            const exercises = await query.exec()
+
+            data._id = user._id
+            data.username = user.username
+            data.count = user.exercises.length
+            data.exercises = exercises
+            
+            res.json(data)
+        } 
     },
     async create (req, res, next) {
         try {
