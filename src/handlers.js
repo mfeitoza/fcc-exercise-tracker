@@ -92,7 +92,7 @@ const exercises = {
                 user.save()
 
                 res.json({
-                    _id: savedExercise._id,
+                    _id: user._id,
                     username: savedExercise.username,
                     description: savedExercise.description,
                     duration: savedExercise.duration,
