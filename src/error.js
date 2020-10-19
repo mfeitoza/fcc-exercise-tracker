@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator')
+
 class ErrorHandler extends Error {
     constructor (status, message) {
         super()
@@ -11,7 +13,7 @@ function handleError (err, res) {
 
     res.status(status).json({
         status: 'error',
-        status,
+        statusCode: status,
         message
     })
 }
